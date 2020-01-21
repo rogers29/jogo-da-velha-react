@@ -9,6 +9,6 @@ requester.interceptors.response.use((response) => (
 ), (error) => {
   const { status, message } = error.response;
   return `${status} - ${message}`;
-}); 
+});
 
 export default requester;

@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Game from  './Game';
+import App from  './App';
 
 // ========================================
 
 ReactDOM.render(
   <Router>
-    <Game />
+    <App />
   </Router>,
   // eslint-disable-next-line no-undef
   document.getElementById('root'),

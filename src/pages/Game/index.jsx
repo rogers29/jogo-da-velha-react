@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Board from '../components/Board';
+import Board from '../../components/Board';
 import styles from './styles';
 
-import { requesterServices } from '../services';
+import { requesterService } from '../../services';
 
 const calculateWinner = async (squares) => {
   try {
-    return requesterServices.post('/', {
+    return requesterService.post('/', {
       squares,
     });
   } catch (err) {

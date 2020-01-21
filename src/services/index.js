@@ -1,8 +1,8 @@
 import requester from './requester';
 
-export const requesterServices = requester;
+export const requesterService = requester;
 
-export default { requesterServices };
+export default { requesterService };
 
 
 // ou

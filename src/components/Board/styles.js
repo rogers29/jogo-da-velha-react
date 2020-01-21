@@ -5,5 +5,5 @@ export default {
       content: '',
       display: 'table',
     },
-  }
+  },
 };

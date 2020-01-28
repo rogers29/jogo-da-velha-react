@@ -5,31 +5,32 @@ import Square from '../Square';
 
 const Board = (props) => {
   const { squares, onClick } = props;
-  
-  const renderSquare = (i) => {
-    return <Square
-      value={squares[i]}
-      onClick={() => onClick(i)}
-    />;
-  }
+
+  const renderSquare = (index) => (
+    <Square
+      value={squares[index]}
+      onClick={() => onClick(index)}
+    />
+  );
+
+  const renderBoard = (x, y) => {
+    const lines = [];
+    let counter = 0;
+
+    for (let indexX = 0; indexX < x; indexX += 1) {
+      const columns = [];
+      for (let indexY = 0; indexY < y; indexY += 1) {
+        columns.push(renderSquare(counter));
+        counter += 1;
+      }
+      lines.push(<div key={indexX} style={styles.boardRow}>{columns}</div>);
+    }
+    return lines;
+  };
 
   return (
     <div>
-      <div style={styles.boardRow}>
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div style={styles.boardRow}>
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div style={styles.boardRow}>
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
+      {renderBoard(3, 3)}
     </div>
   );
 };

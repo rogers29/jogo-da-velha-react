@@ -1,10 +1,10 @@
-import Game from './Game';
-import Simulator from './Simulator';
+import GamePage from './Game';
+import SimulatorPage from './Simulator';
 
-export const PageGame = Game;
-export const PageSimulator = Simulator;
+export const Game = GamePage;
+export const Simulator = SimulatorPage;
 
 export default {
-  PageGame,
-  PageSimulator,
+  Game,
+  Simulator,
 };

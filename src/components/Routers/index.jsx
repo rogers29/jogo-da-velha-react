@@ -1,13 +1,15 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { PageGame } from '../../pages';
+import { Game, Simulator } from '../../pages';
 
 const Routers = () => (
   <Switch>
     <Route path="/game">
-      <PageGame />
+      <Game />
     </Route>
-    {/* <Route path="/simulated"></Route> */}
+    <Route path="/simulator">
+      <Simulator />
+    </Route>
   </Switch>
 );
 

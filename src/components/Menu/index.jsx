@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Menu = () => {
-  return (
-    <div>
+const Menu = () => (
+    <>
       <button type="button">
         <Link to="/game">Game</Link>
       </button>
-      <button type="button">Jogo Simulado</button>
-    </div>
+      <button type="button">
+        <Link to="/simulator">Simulado</Link>
+      </button>
+    </>
   );
-};
 
 export default Menu;

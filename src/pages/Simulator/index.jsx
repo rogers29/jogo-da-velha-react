@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import Game from '../Game';
+import Game from '../../components/Game';
 import { requesterService } from '../../services';
 
 const Simulator = () => {
-  const { simulation, setSimulation } = useState(null);
+  const [simulation, setSimulation] = useState();
 
   const getSimulator = async () => {
     try {
-      return await requesterService.post('/');
+      const response = await requesterService.get('/');
+      setSimulation(response);
+      return response
     } catch (err) {
-      console.log(err);
+        return err;
     }
   };
 
   useEffect(() => {
-    setSimulation(getSimulator());
-  }, [setSimulation]);
+    getSimulator();
+  }, []);
 
   return (
     <Game historyProps={simulation} />

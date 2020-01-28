@@ -1,0 +1,9 @@
+[*.js]
+indent_style = space
+indent_size = 2
+charset = utf-8
+
+[*.jsx]
+indent_style = space
+indent_size = 2
+charset = utf-8

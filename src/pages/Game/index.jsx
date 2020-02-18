@@ -1,8 +1,12 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Game from '../../components/Game';
 
-const GamePage = () => (
-  <Game />
+const PageGame = () => (
+  <>
+    <FormattedMessage id="title" />
+    <Game />
+  </>
 );
 
-export default GamePage;
+export default PageGame;

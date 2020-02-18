@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Game from '../../components/Game';
 import { requesterService } from '../../services';
+import { setHistory, setSimulated } from '../../store/ducks/newGame';
 
 const Simulator = () => {
-  const [simulation, setSimulation] = useState();
-
-  const getSimulator = async () => {
-    try {
-      const response = await requesterService.get('/');
-      setSimulation(response);
-      return response
-    } catch (err) {
-        return err;
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    const getSimulator = async () => {
+      try {
+        const response = await requesterService.get('/');
+        dispatch(setHistory(response));
+        dispatch(setSimulated(true));
+        return response
+      } catch (err) {
+        return err;
+      }
+    };
+
     getSimulator();
-  }, []);
+  }, [dispatch]);
 
   return (
-    <Game historyProps={simulation} />
+    <Game />
   );
 };
 

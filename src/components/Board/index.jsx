@@ -10,20 +10,20 @@ const Board = (props) => {
     <Square
       value={squares[index]}
       onClick={() => onClick(index)}
+      key={index}
     />
   );
 
   const renderBoard = (x, y) => {
     const lines = [];
     let counter = 0;
-
     for (let indexX = 0; indexX < x; indexX += 1) {
       const columns = [];
       for (let indexY = 0; indexY < y; indexY += 1) {
         columns.push(renderSquare(counter));
         counter += 1;
       }
-      lines.push(<div key={indexX} style={styles.boardRow}>{columns}</div>);
+      lines.push(<div style={styles.boardRow} key={indexX}>{columns}</div>);
     }
     return lines;
   };

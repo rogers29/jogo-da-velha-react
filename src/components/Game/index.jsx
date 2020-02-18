@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Board from '../Board';
 import styles from './styles';
-
 import { requesterService } from '../../services';
+import { setStepNumber, 
+  setCurrent, 
+  setHistory, 
+  setNextPlayer, 
+  setWinner,
+} from '../../store/ducks/newGame';
 
 const calculateWinner = async (squares) => {
   try {
@@ -15,32 +20,29 @@ const calculateWinner = async (squares) => {
   }
 };
 
-const Game = (props) => {
-  const { historyProps } = props;
-
-  const [history, setHistory] = useState(historyProps);
-  const [xIsNext, setXIsNext] = useState(true);
-  const [stepNumber, setStepNumber] = useState(0);
-  const [winner, setWinner] = useState(null);
-  const [current, setCurrent] = useState(historyProps[0]);
-
-  const defineWinner = async (squares) => {
-    setWinner(await calculateWinner(squares));
-  };
+const Game = () => {
+  const history = useSelector(state => state.newGame.history);
+  const nextPlayer = useSelector(state => state.newGame.nextPlayer);
+  const stepNumber = useSelector(state => state.newGame.stepNumber);
+  const winner = useSelector(state => state.newGame.winner);
+  const current = useSelector(state => state.newGame.current);
+  const simulated = useSelector(state => state.newGame.simulated);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setHistory(historyProps);
-    setCurrent(historyProps[historyProps.length - 1]);
-    defineWinner(historyProps[historyProps.length - 1].squares);
-    setStepNumber(historyProps.length);
-  }, [historyProps]);
+    if (history.length > 1) {
+      dispatch(setStepNumber(history.length - 1));
+      dispatch(setCurrent(history[history.length - 1]));
+    }
+  }, [history, dispatch]);
 
-  useEffect(() => {
-    setStepNumber(history.length);
-    setCurrent(history[history.length -1]);
-  }, [history]);
-
+  const getNextPlayer = () => (nextPlayer === 'X' ? 'O' : 'X');
+  
   const handleClick = async (i) => {
+    if (simulated) {
+      return;
+    }
+
     const subHistory = history.slice(0, stepNumber + 1);
     const subCurrent = subHistory[subHistory.length - 1];
     const squares = subCurrent.squares.slice();
@@ -49,20 +51,19 @@ const Game = (props) => {
       return;
     }
 
-    squares[i] = xIsNext ? 'X' : 'O';
-
+    squares[i] = nextPlayer;
     const newHistory = subHistory.concat([{ squares }]);
-    setHistory(newHistory);
-    setXIsNext((x) => !x);
-    // setXIsNext(!xIsNext);
-    defineWinner(squares);
+
+    dispatch(setHistory(newHistory));
+    dispatch(setNextPlayer(getNextPlayer));
+    dispatch(setWinner(await calculateWinner(squares)));
   };
 
   const jumpTo = async (step) => {
-    setStepNumber(step);
-    setXIsNext((step % 2) === 0);
-    setCurrent(history[step]);
-    defineWinner(history[step].squares);
+    dispatch(setStepNumber(step));
+    dispatch(setNextPlayer(((step % 2) === 0) ? 'X' : 'O'));
+    dispatch(setCurrent(history[step]));
+    dispatch(setWinner(await calculateWinner(history[step].squares)));
   };
 
   const moves = history.map((step, move) => {
@@ -76,8 +77,7 @@ const Game = (props) => {
       </li>
     );
   });
-
-  const nextPlayer = xIsNext ? 'X' : 'O';
+  
   const status = winner
     ? `Winner: ${winner}`
     : `Next player: ${nextPlayer}`;
@@ -96,14 +96,6 @@ const Game = (props) => {
       </div>
     </div>
   );
-};
-
-Game.propTypes = {
-  historyProps: PropTypes.arrayOf(PropTypes.object),
-};
-
-Game.defaultProps = {
-  historyProps: [{ squares: Array(9).fill(null) }],
 };
 
 export default Game;

@@ -2,31 +2,21 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Board from '../Board';
 import styles from './styles';
-import { requesterService } from '../../services';
-import { setStepNumber, 
-  setCurrent, 
-  setHistory, 
-  setNextPlayer, 
-  setWinner,
-} from '../../store/ducks/newGame';
-
-const calculateWinner = async (squares) => {
-  try {
-    return requesterService.post('/', {
-      squares,
-    });
-  } catch (err) {
-    return err;
-  }
-};
+import {
+  setStepNumber,
+  setCurrent,
+  setHistory,
+  setNextPlayer,
+  calculateWinner,
+} from '../../store/ducks/game';
 
 const Game = () => {
-  const history = useSelector(state => state.newGame.history);
-  const nextPlayer = useSelector(state => state.newGame.nextPlayer);
-  const stepNumber = useSelector(state => state.newGame.stepNumber);
-  const winner = useSelector(state => state.newGame.winner);
-  const current = useSelector(state => state.newGame.current);
-  const simulated = useSelector(state => state.newGame.simulated);
+  const history = useSelector((state) => state.game.history);
+  const nextPlayer = useSelector((state) => state.game.nextPlayer);
+  const stepNumber = useSelector((state) => state.game.stepNumber);
+  const winner = useSelector((state) => state.game.winner);
+  const current = useSelector((state) => state.game.current);
+  const simulated = useSelector((state) => state.game.simulated);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,7 +27,7 @@ const Game = () => {
   }, [history, dispatch]);
 
   const getNextPlayer = () => (nextPlayer === 'X' ? 'O' : 'X');
-  
+
   const handleClick = async (i) => {
     if (simulated) {
       return;
@@ -55,15 +45,15 @@ const Game = () => {
     const newHistory = subHistory.concat([{ squares }]);
 
     dispatch(setHistory(newHistory));
-    dispatch(setNextPlayer(getNextPlayer));
-    dispatch(setWinner(await calculateWinner(squares)));
+    dispatch(setNextPlayer(getNextPlayer()));
+    dispatch(calculateWinner(squares));
   };
 
   const jumpTo = async (step) => {
     dispatch(setStepNumber(step));
     dispatch(setNextPlayer(((step % 2) === 0) ? 'X' : 'O'));
     dispatch(setCurrent(history[step]));
-    dispatch(setWinner(await calculateWinner(history[step].squares)));
+    dispatch(calculateWinner(history[step].squares));
   };
 
   const moves = history.map((step, move) => {
@@ -77,7 +67,7 @@ const Game = () => {
       </li>
     );
   });
-  
+
   const status = winner
     ? `Winner: ${winner}`
     : `Next player: ${nextPlayer}`;

@@ -10,13 +10,14 @@ const initialState = {
 // Action Types
 
 export const Types = {
-  SET_HISTORY: 'newGame/setHistory',
-  SET_NEXT_PLAYER: 'newGame/setNextPlayer',
-  SET_STEP_NUMBER: 'newGame/setStepNumber',
-  SET_WINNER: 'newGame/setWinner',
-  SET_CURRENT: 'newGame/setCurrent',
-  SET_SIMULATED: 'newGame/setSimulated',
-  RESET: 'newGame/reset',
+  RESET: 'game/reset',
+  SAGA_SET_WINNER: 'game/sagaSetWinner',
+  SET_HISTORY: 'game/setHistory',
+  SET_NEXT_PLAYER: 'game/setNextPlayer',
+  SET_STEP_NUMBER: 'game/setStepNumber',
+  SET_WINNER: 'game/setWinner',
+  SET_CURRENT: 'game/setCurrent',
+  SET_SIMULATED: 'game/setSimulated',
 };
 
 // Action Creators
@@ -42,10 +43,17 @@ export function setStepNumber(stepNumber) {
   };
 }
 
-export function setWinner(winner) {
+export function calculateWinner(squares) {
   return {
-    type: Types.SET_WINNER,
-    payload: winner,
+    type: Types.SAGA_SET_WINNER,
+    payload: squares,
+  };
+}
+
+export function setWinner(squares) {
+  return {
+    type: Types.SAGA_SET_WINNER,
+    payload: squares,
   };
 }
 

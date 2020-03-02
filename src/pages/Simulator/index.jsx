@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Game from '../../components/Game';
 import { requesterService } from '../../services';
-import { setHistory, setSimulated } from '../../store/ducks/newGame';
+import { setHistory, setSimulated } from '../../store/ducks/game';
 
 const Simulator = () => {
   const dispatch = useDispatch();

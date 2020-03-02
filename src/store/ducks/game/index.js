@@ -10,14 +10,14 @@ const initialState = {
 // Action Types
 
 export const Types = {
-  RESET: 'game/reset',
-  SAGA_SET_WINNER: 'game/sagaSetWinner',
   SET_HISTORY: 'game/setHistory',
   SET_NEXT_PLAYER: 'game/setNextPlayer',
   SET_STEP_NUMBER: 'game/setStepNumber',
   SET_WINNER: 'game/setWinner',
   SET_CURRENT: 'game/setCurrent',
   SET_SIMULATED: 'game/setSimulated',
+  RESET: 'game/reset',
+  SAGA_SET_WINNER: 'game/sagaSetWinner',
 };
 
 // Action Creators
@@ -52,7 +52,7 @@ export function calculateWinner(squares) {
 
 export function setWinner(squares) {
   return {
-    type: Types.SAGA_SET_WINNER,
+    type: Types.SET_WINNER,
     payload: squares,
   };
 }
